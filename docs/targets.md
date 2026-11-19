@@ -307,17 +307,18 @@ with the first line that isn't. The subset is:
     - a flow list over several lines, as Prettier writes it, with `[` ending its line (or alone on the next), one item
       per line, and `]` on its own line;
     - a flat flow mapping over several lines, with `{` ending the opening line, one `key: scalar` per line,
-      commas between entries, and `}` on its own line. A closing `},` is allowed as an item in a flow list.
+      commas between entries, and `}` on its own line. Such a mapping can also be an item of a multi-line flow list,
+      closed by `}` or `},`.
 - **Anchors.** An anchor on a block (`with: &w`) is accepted and read as usual.
-- **Accepted but never read.** Aliases (`*w`), double-quoted values with escapes, single- or double-quoted values
-  continued on more-indented lines, and plain values continued on more-indented lines (long `if:` and `run:` lines)
-  are accepted where they aren't needed, and refused where wheelgap would read them.
+- **Accepted but never read.** Aliases (`*w`), double-quoted values with escapes (outside flow collections), single-
+  or double-quoted values continued on more-indented lines, and plain values continued on more-indented lines (long
+  `if:` and `run:` lines) are accepted where they aren't needed, and refused where wheelgap would read them.
 
-Everything else isn't read: control characters (except tabs) or invalid backslash escapes in quoted scalars,
-anchors or tags inside a value, an alias with no anchor before it,
-a key or anchor used twice, lines indented under a value (including `key: {...}`), `? ` keys, `<<` merge keys, a second
-document, flow collections in other layouts, and line breaks other than `\n` and `\r\n`. Non-ASCII spaces such as NBSP
-are ordinary characters, as they are to YAML.
+Everything else isn't read: control characters (except tabs) in quoted scalars, invalid backslash escapes in
+double-quoted ones, `''` in single-quoted ones, escapes inside flow collections, anchors or tags inside a value, an
+alias with no anchor before it, a key or anchor used twice, lines indented under a value (including `key: {...}`), `? `
+keys, `<<` merge keys, a second document, flow collections in other layouts, and line breaks other than `\n` and
+`\r\n`. Non-ASCII spaces such as NBSP are ordinary characters, as they are to YAML.
 
 In a file that is read, anything wheelgap can't be sure of is still listed under "Couldn't read" with its file and line,
 and never guessed:
